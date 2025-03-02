@@ -1,0 +1,62 @@
+#include<iostream>
+#include<deque>
+using namespace std;
+int map[20][20];
+int vis[20][20];
+int stx,sty,endx,endy;
+bool op=false;
+deque<pair<int,int>>q;
+void dfs(int x,int y)
+{
+    if(vis[x][y]==1||map[x][y]==0)
+    {
+        return ;
+    }
+    if(x==endx&&y==endy)
+    {
+        q.push_back(make_pair(x,y));
+        for(auto i:q)
+        {
+            if(i!=q.front())
+            {
+                cout<<"->";
+            }
+            
+                cout<<"("<<i.first<<","<<i.second<<")";
+            
+        }
+        cout<<endl;
+        op=true;
+        q.pop_back();
+        return ;
+    }
+    q.push_back(make_pair(x,y));
+    vis[x][y]=1;
+    dfs(x,y-1);
+    dfs(x-1,y);
+    dfs(x,y+1);
+    dfs(x+1,y);//向四个方向走
+    //到这时无路走
+    vis[x][y]=0;//后退一步
+    q.pop_back();
+}
+int main()
+{
+    int x1,x2;
+    cin>>x1>>x2;
+    for(int i=1;i<=x1;i++)
+    {
+        for(int j=1;j<=x2;j++)
+        {
+            cin>>map[i][j];
+        }
+    }
+    cin>>stx>>sty;
+    cin>>endx>>endy;
+    dfs(stx,sty);
+    if(op==false)
+    {
+        cout<<"-1";
+    }
+    return 0;
+}
