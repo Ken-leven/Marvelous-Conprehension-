@@ -1,0 +1,55 @@
+#include<iostream>
+#include<deque>
+using namespace std;
+char map[119][80];
+int r,c;
+int vis[119][80];
+bool op=false;
+deque<pair<int,int>>q;
+void dfs(int x,int y)
+{
+    if(op)return;
+    else{
+        if(map[x][y]=='*'||vis[x][y]==1)return ;
+    if(x==r&&y==c)
+    {
+        q.push_back(make_pair(x,y));
+        for(auto i:q)
+        {
+            cout<<i.first<<' '<<i.second<<endl;
+        }
+        q.pop_back();
+        op=true;
+        return ;
+    }
+    q.push_back(make_pair(x,y));
+    vis[x][y]=1;
+    dfs(x-1,y);                //连续而有序的四个dfs保证了走一条路不会反复横跳  
+    dfs(x,y-1);
+    dfs(x+1,y);
+    dfs(x,y+1);
+    q.pop_back();   //这里省略了vis=0的步骤来加速 因为只用找到一种解即可
+    //vis=0的作用是回溯时的
+      //
+    }
+}
+int main()
+{
+    for(int i=0;i<=118;i++)
+    {
+        for(int j=0;j<=79;j++)
+        {
+            map[i][j]='*';
+        }
+    }
+    cin>>r>>c;
+    for(int i=1;i<=r;i++)
+    {
+        for(int j=1;j<=c;j++)
+        {
+            cin>>map[i][j];
+        }
+    }
+    dfs(1,1);
+    return 0;
+}
